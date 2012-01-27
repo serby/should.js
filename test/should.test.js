@@ -512,5 +512,56 @@ module.exports = {
     err(function(){
       (function(){ throw new Error('error'); }).should.throw('fail');
     }, "expected an exception to be thrown with a message matching 'fail', but got 'error'");
+  },
+
+  'test throw() with Function': function(){
+    (function(){ throw new Error('fail'); }).should.throw(Error);
+
+    err(function(){
+      (function(){}).should.throw(Error);
+    }, 'expected an exception to be thrown');
+
+    err(function(){
+      (function(){ throw new Error('error'); }).should.throw(TypeError);
+    }, "expected an exception to be thrown as an instance of 'TypeError', but got 'Error'");
+  },
+
+  'test throw() with Function and string message': function(){
+    (function(){ throw new Error('fail'); }).should.throw(Error, 'fail');
+
+    err(function(){
+      (function(){}).should.throw(Error, 'fail');
+    }, 'expected an exception to be thrown');
+
+    err(function(){
+      (function(){ throw new Error('fail')}).should.throw(TypeError, 'fail');
+    }, "expected an exception to be thrown as an instance of 'TypeError', but got 'Error'");
+
+   err(function(){
+      (function(){ throw new Error('error')}).should.throw(Error, 'fail');
+    }, "expected an exception to be thrown with a message matching 'fail', but got 'error'");
+
+  },
+
+  'test throw() with Function and regex message': function(){
+    (function(){ throw new Error('fail'); }).should.throw(Error, /fail/);
+
+    err(function(){
+      (function(){}).should.throw(Error, /fail/);
+    }, 'expected an exception to be thrown');
+
+    err(function(){
+      (function(){ throw new Error('fail')}).should.throw(TypeError, /fail/);
+    }, "expected an exception to be thrown as an instance of 'TypeError', but got 'Error'");
+
+   err(function(){
+      (function(){ throw new Error('error')}).should.throw(Error, /fail/);
+    }, "expected an exception to be thrown with a message matching /fail/, but got 'error'");
+  },
+
+  'test throw() with a non-function and string message': function(){
+    (function() {
+      (function(){}).should.throw({}, 'error is expected to be a Function, but got [object Object]');
+    }).should.throw('error is expected to be a Function, but got [object Object]');
   }
-}; 
+};
